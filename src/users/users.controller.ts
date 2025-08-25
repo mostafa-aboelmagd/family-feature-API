@@ -29,12 +29,12 @@ export class UsersController {
       throw new ConflictException('Phone number already registered');
     }
 
-    return this.usersService.create(createUserDto);
+    return this.usersService.createUser(createUserDto);
   }
 
   @Get()
   async findAll(): Promise<User[]> {
-    return this.usersService.findAll();
+    return this.usersService.findAllUsers();
   }
 
   @Get(':id')
