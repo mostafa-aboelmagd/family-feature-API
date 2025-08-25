@@ -14,11 +14,11 @@ import { ParseObjectIdPipe } from '@nestjs/mongoose';
 
 @Controller('users')
 export class UsersController {
-  constructor(private userService: UsersService) {}
+  constructor(private usersService: UsersService) {}
 
   @Post('create')
   async createUser(@Body() createUserDto: CreateUserDTO): Promise<string> {
-    const existingUser = await this.userService.findUserByPhone(
+    const existingUser = await this.usersService.findUserByPhone(
       createUserDto.phone_number,
     );
 
@@ -26,13 +26,13 @@ export class UsersController {
       throw new ConflictException('Phone number already registered');
     }
 
-    await this.userService.create(createUserDto);
+    await this.usersService.create(createUserDto);
     return 'User Created Successfully';
   }
 
   @Get(':id')
   async findOne(@Param('id', ParseObjectIdPipe) id: string): Promise<User> {
-    const user = await this.userService.findUserById(id);
+    const user = await this.usersService.findUserById(id);
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -41,6 +41,6 @@ export class UsersController {
 
   @Get()
   async findAll(): Promise<User[]> {
-    return this.userService.findAll();
+    return this.usersService.findAll();
   }
 }
