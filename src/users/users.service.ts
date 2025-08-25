@@ -1,17 +1,29 @@
-import { Model } from 'mongoose';
+import { Connection, Model } from 'mongoose';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { User } from './schema/user.schema';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { isValidObjectId } from 'mongoose';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    @InjectConnection() private readonly connection: Connection,
+  ) {}
 
-  async create(createUserDto: CreateUserDTO): Promise<User> {
-    const createdUser = new this.userModel(createUserDto);
-    return createdUser.save();
+  async create(createUserDto: CreateUserDTO) {
+    const session = await this.connection.startSession();
+    session.startTransaction();
+    try {
+      const createdUser = new this.userModel(createUserDto);
+      return createdUser.save();
+    } catch (error) {
+      await session.abortTransaction();
+      throw error;
+    } finally {
+      session.endSession();
+    }
   }
 
   async findUserById(id: string) {
