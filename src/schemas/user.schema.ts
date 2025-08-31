@@ -15,6 +15,12 @@ export const UserSchema = new Schema(
         required: true,
         unique: true,
     },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email'],
+    },
     familyId: {
         type: Schema.Types.ObjectId,
         ref: 'Family',

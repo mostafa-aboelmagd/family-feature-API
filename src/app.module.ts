@@ -5,6 +5,8 @@ import { UserModule } from './user/user.module';
 import { FamilyModule } from './family/family.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
+import { InvitationModule } from './invitation/invitation.module';
+
 
 @Module({
   imports: [
@@ -19,6 +21,7 @@ import { ConfigModule } from '@nestjs/config';
     }),
     UserModule,
     FamilyModule,
+    InvitationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -11,6 +11,6 @@ import * as mongoose from 'mongoose';
   ],
   controllers: [UserController],
   providers: [UserService],
-  exports: [MongooseModule],
+  exports: [MongooseModule, UserService],
 })
 export class UserModule {}

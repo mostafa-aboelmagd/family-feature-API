@@ -12,5 +12,6 @@ import { FamilySchema } from '../schemas/family.schema';
   ],
   controllers: [FamilyController],
   providers: [FamilyService],
+  exports: [FamilyService],
 })
 export class FamilyModule {}
