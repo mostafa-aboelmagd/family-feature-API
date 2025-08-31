@@ -4,11 +4,22 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { FamilyModule } from './family/family.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb+srv://dbAdmin:f3qondCkJ6ratpvL@familyfeaturedb.kkbgx5x.mongodb.net/'),
-    UserModule, FamilyModule],
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+      isGlobal: true,
+    }),
+    MongooseModule.forRootAsync({
+      useFactory: () => ({
+        uri: process.env.MONGODB_URI,
+      }),
+    }),
+    UserModule,
+    FamilyModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
