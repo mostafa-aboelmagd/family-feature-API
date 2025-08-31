@@ -15,6 +15,9 @@ export class User {
   @Prop({ required: true, unique: true })
   phone_number: string;
 
+  @Prop({ required: true, unique: true })
+  email: string;
+
   // inside the class definition
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
